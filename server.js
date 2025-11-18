@@ -5,10 +5,19 @@ dotenv.config();
 import connectDB from "./config/db.js";
 import customerRoutes from "./routes/customerRoutes.js";
 const port = process.env.PORT || 5000;
+import cors from "cors";
 
 connectDB();
 
 const app = express();
+
+app.use(
+  cors({
+    origin: "http://192.168.0.187:5173",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
 app.use(express.json());
 

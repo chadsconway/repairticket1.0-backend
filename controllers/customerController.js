@@ -1,5 +1,6 @@
 import asyncHandler from "../middleware/asyncHandler.js";
 import Customer from "../models/customerModel.js";
+import AppError from "../errors/AppError.js";
 
 // @desc    Get all customers
 // @route   GET /api/customers
@@ -28,16 +29,30 @@ const getCustomerById = asyncHandler(async (req, res) => {
 const createCustomer = asyncHandler(async (req, res) => {
   try {
     const newCustomer = req.body;
-    console.log(newCustomer);
+
+    // console.log("newCustomer data is typeof:", typeof newCustomer);
     const customer = new Customer(newCustomer);
-    console.log(customer);
+    // console.log("Customer is of type:", typeof customer);
+    // const customerJSON = JSON.stringify(customer);
+    // console.log("customerJSON is of type:", typeof customerJSON);
+
     await customer.save();
     res
       .status(201)
       .json({ message: "Data saved successfully", data: customer });
   } catch (error) {
-    res.status(400);
-    throw new Error("Invalid customer data");
+    if (error instanceof AppError) {
+      console.error(
+        `Custom Error: ${error.message}`,
+        `Status: ${error.statusCode}`
+      );
+      console.error(`Full Error: ${error}`);
+      res.status(400);
+      // throw new Error("Invalid customer data");
+    } else {
+      console.error("Unexpected Error:", error);
+      res.status(500);
+    }
   }
 });
 

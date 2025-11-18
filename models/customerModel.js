@@ -50,7 +50,7 @@ const customerSchema = new mongoose.Schema(
         mdbID: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "RepairTicket",
-          required: true,
+          required: false,
         },
       },
     ],
