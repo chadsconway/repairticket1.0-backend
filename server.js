@@ -2,6 +2,8 @@ import express from "express";
 
 import dotenv from "dotenv";
 dotenv.config();
+console.log("Environment Variables:", process.env);
+console.log(`DEBUG_MODE: typeof(${process.env.DEBUG_MODE})`);
 import connectDB from "./config/db.js";
 import customerRoutes from "./routes/customerRoutes.js";
 const port = process.env.PORT || 5000;

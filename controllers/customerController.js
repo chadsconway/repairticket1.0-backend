@@ -1,12 +1,20 @@
 import asyncHandler from "../middleware/asyncHandler.js";
 import Customer from "../models/customerModel.js";
 import AppError from "../errors/AppError.js";
+import dotenv from "dotenv";
+dotenv.config();
+const DEBUG = process.env.DEBUG === "true";
 
 // @desc    Get all customers
 // @route   GET /api/customers
 // @access  Public
 const getCustomers = asyncHandler(async (req, res) => {
   const customers = await Customer.find({});
+  if (DEBUG) {
+    console.log(
+      `API GET /api/customers - Retrieved ${customers.length} customers`
+    );
+  }
   res.json(customers);
 });
 
@@ -14,6 +22,11 @@ const getCustomers = asyncHandler(async (req, res) => {
 // @route   GET /api/customers/:id
 // @access  Public
 const getCustomerById = asyncHandler(async (req, res) => {
+  if (DEBUG) {
+    console.log(
+      `API GET /api/customers/${req.params.id} - Retrieving customer`
+    );
+  }
   const customer = await Customer.findById(req.params.id);
   if (customer) {
     res.json(customer);
@@ -28,6 +41,10 @@ const getCustomerById = asyncHandler(async (req, res) => {
 // @access  Public
 const createCustomer = asyncHandler(async (req, res) => {
   try {
+    if (DEBUG) {
+      console.log("API POST /api/customers - Creating new customer");
+      console.log("Request body:", req.body);
+    }
     const newCustomer = req.body;
 
     // console.log("newCustomer data is typeof:", typeof newCustomer);
@@ -61,6 +78,10 @@ const createCustomer = asyncHandler(async (req, res) => {
 // @access  Public
 const updateCustomer = asyncHandler(async (req, res) => {
   const customer = await Customer.findById(req.params.id);
+  if (DEBUG) {
+    console.log("Updating customer with ID:", req.params.id);
+    console.log("Request body:", req.body);
+  }
   if (customer) {
     customer.firstName = req.body.firstName || customer.firstName;
     customer.lastName = req.body.lastName || customer.lastName;
