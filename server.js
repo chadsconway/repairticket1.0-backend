@@ -8,6 +8,7 @@ import connectDB from "./config/db.js";
 import customerRoutes from "./routes/customerRoutes.js";
 const port = process.env.PORT || 5000;
 import cors from "cors";
+import logger from "./middleware/logger.js";
 
 connectDB();
 
@@ -22,6 +23,8 @@ app.use(
 );
 
 app.use(express.json());
+
+// app.use(logger);
 
 app.use("/api/customers", customerRoutes);
 

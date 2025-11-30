@@ -3,7 +3,7 @@ import Customer from "../models/customerModel.js";
 import AppError from "../errors/AppError.js";
 import dotenv from "dotenv";
 dotenv.config();
-const DEBUG = process.env.DEBUG === "true";
+const DEBUG = process.env.DEBUG_MODE;
 
 // @desc    Get all customers
 // @route   GET /api/customers
@@ -77,28 +77,52 @@ const createCustomer = asyncHandler(async (req, res) => {
 // @route   PUT /api/customers/:id
 // @access  Public
 const updateCustomer = asyncHandler(async (req, res) => {
-  const customer = await Customer.findById(req.params.id);
+  // const customer = await Customer.findById(req.params.id);
+  // if (DEBUG) {
+  //   console.log("Updating customer with ID:", req.params.id);
+  //   console.log("Request body:", req.body);
+  //   console.log("Email address to update:", req.body.customer.email);
+  // }
+  // if (customer) {
+  //   customer.firstName = req.body.customer.firstName || customer.firstName;
+  //   customer.lastName = req.body.customer.lastName || customer.lastName;
+  //   customer.email = req.body.customer.email || customer.email;
+  //   customer.phone = req.body.customer.phone || customer.phone;
+  //   customer.streetAddress =
+  //     req.body.customer.streetAddress || customer.streetAddress;
+  //   customer.unitNumber = req.body.customer.unitNumber || customer.unitNumber;
+  //   customer.city = req.body.customer.city || customer.city;
+  //   customer.state = req.body.customer.state || customer.state;
+  //   customer.zipCode = req.body.customer.zipCode || customer.zipCode;
+  // }
+  // if (DEBUG) {
+  //   console.log("Updated customer data to save:", customer);
+  // }
   if (DEBUG) {
-    console.log("Updating customer with ID:", req.params.id);
-    console.log("Request body:", req.body);
+    console.log("_id to update: ", req.params.id);
   }
-  if (customer) {
-    customer.firstName = req.body.firstName || customer.firstName;
-    customer.lastName = req.body.lastName || customer.lastName;
-    customer.email = req.body.email || customer.email;
-    customer.phone = req.body.phone || customer.phone;
-    customer.streetAddress = req.body.streetAddress || customer.streetAddress;
-    customer.unitNumber = req.body.unitNumber || customer.unitNumber;
-    customer.city = req.body.city || customer.city;
-    customer.state = req.body.state || customer.state;
-    customer.zipCode = req.body.zipCode || customer.zipCode;
+  const customer_id = req.params.id;
+  const newCustomer = req.body;
 
-    const updatedCustomer = await customer.save();
-    res.json(updatedCustomer);
-  } else {
-    res.status(404);
-    throw new Error("Customer not found");
+  // console.log("newCustomer data is typeof:", typeof newCustomer);
+  const customer = new Customer(newCustomer);
+  if (DEBUG) {
+    console.log("Customer to update is of type:", typeof customer);
+    console.log("Customer data to update:", customer);
   }
+
+  await customer.updateOne({ _id: customer_id }).then(
+    (updatedCustomer) => {
+      if (DEBUG) {
+        console.log("Customer updated successfully:", updatedCustomer);
+      }
+      res.json(updatedCustomer);
+    },
+    (error) => {
+      res.status(404);
+      throw new Error("Customer not found");
+    }
+  );
 });
 // @desc    Delete a customer
 // @route   DELETE /api/customers/:id
