@@ -100,6 +100,7 @@ const updateCustomer = asyncHandler(async (req, res) => {
   // }
   if (DEBUG) {
     console.log("_id to update: ", req.params.id);
+    console.log("subdoc _id to update: ", req.body.customer._id);
   }
   const customer_id = req.params.id;
   const newCustomer = req.body;

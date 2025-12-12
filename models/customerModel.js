@@ -1,8 +1,13 @@
 import mongoose from "mongoose";
-import CustomerSubdoc from "./customerSubdocModel";
+import CustomerSubdoc from "./customerSubdocModel.js";
 
 const customerSchema = new mongoose.Schema(
   {
+    _id: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      auto: true,
+    },
     customer: {
       type: CustomerSubdoc.schema,
       required: true,
