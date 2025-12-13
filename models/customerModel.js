@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import CustomerSubdoc from "./customerSubdocModel.js";
 
 const customerSchema = new mongoose.Schema(
   {
@@ -8,9 +7,45 @@ const customerSchema = new mongoose.Schema(
       required: true,
       auto: true,
     },
-    customer: {
-      type: CustomerSubdoc.schema,
+    custID: {
+      type: String,
       required: true,
+    },
+    firstName: {
+      type: String,
+      required: true,
+    },
+    lastName: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: false,
+    },
+    phone: {
+      type: String,
+      required: false,
+    },
+    streetAddress: {
+      type: String,
+      required: false,
+    },
+    unitNumber: {
+      type: String,
+      required: false,
+    },
+    city: {
+      type: String,
+      required: false,
+    },
+    state: {
+      type: String,
+      required: false,
+    },
+    zipCode: {
+      type: String,
+      required: false,
     },
     repairTickets: [
       {

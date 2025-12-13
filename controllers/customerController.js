@@ -99,8 +99,9 @@ const updateCustomer = asyncHandler(async (req, res) => {
   //   console.log("Updated customer data to save:", customer);
   // }
   if (DEBUG) {
+    console.log("backend/controllers/customerController.js - updateCustomer");
     console.log("_id to update: ", req.params.id);
-    console.log("subdoc _id to update: ", req.body.customer._id);
+    console.log("data in req.body for update: ", req.body);
   }
   const customer_id = req.params.id;
   const newCustomer = req.body;
@@ -111,19 +112,31 @@ const updateCustomer = asyncHandler(async (req, res) => {
     console.log("Customer to update is of type:", typeof customer);
     console.log("Customer data to update:", customer);
   }
-
-  await customer.updateOne({ _id: customer_id }).then(
-    (updatedCustomer) => {
-      if (DEBUG) {
-        console.log("Customer updated successfully:", updatedCustomer);
-      }
-      res.json(updatedCustomer);
-    },
-    (error) => {
-      res.status(404);
-      throw new Error("Customer not found");
-    }
+  // @Update customer with save method
+  const updatedCustomer = await Customer.findByIdAndUpdate(
+    customer_id,
+    customer,
+    { new: true }
   );
+  if (DEBUG) {
+    console.log("Customer updated successfully:", updatedCustomer);
+  }
+  res.json(updatedCustomer);
+
+  // Alternative update using updateOne method
+
+  // await customer.updateOne({ _id: customer_id }).then(
+  //   (updatedCustomer) => {
+  //     if (DEBUG) {
+  //       console.log("Customer updated successfully:", updatedCustomer);
+  //     }
+  //     res.json(updatedCustomer);
+  //   },
+  //   (error) => {
+  //     res.status(404);
+  //     throw new Error("Customer not found");
+  //   }
+  // );
 });
 // @desc    Delete a customer
 // @route   DELETE /api/customers/:id
