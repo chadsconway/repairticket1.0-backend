@@ -2,8 +2,8 @@ import express from "express";
 
 import dotenv from "dotenv";
 dotenv.config();
-console.log("Environment Variables:", process.env);
-console.log(`DEBUG_MODE: typeof(${process.env.DEBUG_MODE})`);
+// console.log("Environment Variables:", process.env);
+// console.log(`DEBUG_MODE: typeof(${process.env.DEBUG_MODE})`);
 import connectDB from "./config/db.js";
 import customerRoutes from "./routes/customerRoutes.js";
 const port = process.env.PORT || 5000;
@@ -16,10 +16,10 @@ const app = express();
 
 app.use(
   cors({
-    origin: "http://192.168.0.187:5173",
+    origin: "http://localhost:5173",
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
-  })
+  }),
 );
 
 app.use(express.json());
